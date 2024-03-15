@@ -40,8 +40,11 @@ typedef enum {
 
 void Init_PWM_Timer(TIM_HandleTypeDef *htim,TIM_TypeDef *timerInstance, uint32_t Prescaler, uint32_t Period, uint32_t pwm_channel_init);
 void motor_init(Motor motor);
-void motor_set_speed(Motor motor ,uint16_t speed );
+void motor_set_speed(Motor motor ,uint8_t speed );
 void motor_set_direction(Motor motor,MotorDirection direction);
-
-
+void motor_stop(void);
+void motor_forward(uint8_t speed);
+void motor_reverse(uint8_t speed);
+void motor_right(uint8_t speed);
+void motor_left(uint8_t speed);
 #endif /* INC_MOTORDRIVER_H_ */

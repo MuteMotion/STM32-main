@@ -2,3 +2,8 @@
 ../Drivers/motorDriver/motorDriver.c:41:6:motor_init	48	static
 ../Drivers/motorDriver/motorDriver.c:78:6:motor_set_speed	16	static
 ../Drivers/motorDriver/motorDriver.c:91:6:motor_set_direction	16	static
+../Drivers/motorDriver/motorDriver.c:122:6:motor_stop	8	static
+../Drivers/motorDriver/motorDriver.c:130:6:motor_forward	16	static
+../Drivers/motorDriver/motorDriver.c:139:6:motor_reverse	16	static
+../Drivers/motorDriver/motorDriver.c:148:6:motor_right	16	static
+../Drivers/motorDriver/motorDriver.c:157:6:motor_left	16	static

@@ -43,6 +43,8 @@
 UART_HandleTypeDef huart6;
 //TIM_HandleTypeDef htim2;
 /* USER CODE BEGIN PV */
+#define MAX_DISTANCE 100
+#define MIN_DISTANCE 15
 #define MAX_WARNING_DISTANCE 300  // Adjust as needed
 #define MIN_WARNING_DISTANCE 100
 int frontFlag, front_rightFlag, front_leftFlag,back_rightFlag, back_leftFlag ,backFlag ,motorSpeed;
@@ -53,6 +55,9 @@ void SystemClock_Config(void);
 static void MX_USART6_UART_Init(void);
 
 /* USER CODE BEGIN PFP */
+uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max);
+void adjustMotors(uint16_t distance);
+void ACC(void);
 void collisionWarning(void);
 uint32_t constrain(uint32_t value, uint32_t min, uint32_t max);
 /* USER CODE END PFP */
@@ -98,7 +103,7 @@ int main(void)
   ultraSonic_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-int speed=0,flag=0;
+int speed=200,flag=0;
 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, 0);
 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, 1);
 //  /* USER CODE END 2 */
@@ -111,35 +116,52 @@ int speed=0,flag=0;
 //
 //	  	  printf("Distance: %d \n\r",frontDistance);
 //	  	  HAL_Delay(500);
-	  if (flag ==0){
-	  motor_set_direction(MOTOR_A, 1);
-	  motor_set_direction(MOTOR_B, 1);
-	  motor_set_speed(MOTOR_A, speed);
-	  motor_set_speed(MOTOR_B, speed);
-//	  TIM2->CCR2=speed;
-	  speed+=20;
-	  HAL_Delay(1000);
-	  if (speed>255){
-		  speed =0;
-		  flag =1;
-	  }
-	  }
-	  else {
-		  motor_set_direction(MOTOR_A, 0);
-		  	  motor_set_direction(MOTOR_B, 0);
-		  	  motor_set_speed(MOTOR_A, speed);
-		  	  motor_set_speed(MOTOR_B, speed);
-		  //	  TIM2->CCR2=speed;
-		  	  speed+=20;
-		  	  HAL_Delay(1000);
-		  	  if (speed>255){
-		  		  speed =0;
-		  		  flag =0;
-		  	  }
-	  }
+//	  if (flag ==0){
+//	  motor_set_direction(MOTOR_A, 1);
+//	  motor_set_direction(MOTOR_B, 1);
+//	  motor_set_speed(MOTOR_A, speed);
+//	  motor_set_speed(MOTOR_B, speed);
+////	  TIM2->CCR2=speed;
+//	  speed+=20;
+//	  HAL_Delay(1000);
+//	  if (speed>255){
+//		  speed =0;
+//		  flag =1;
+//	  }
+//	  }
+//	  else {
+//		  motor_set_direction(MOTOR_A, 0);
+//		  	  motor_set_direction(MOTOR_B, 0);
+//		  	  motor_set_speed(MOTOR_A, speed);
+//		  	  motor_set_speed(MOTOR_B, speed);
+//		  //	  TIM2->CCR2=speed;
+//		  	  speed+=20;
+//		  	  HAL_Delay(1000);
+//		  	  if (speed>255){
+//		  		  speed =0;
+//		  		  flag =0;
+//		  	  }
+//	  }
 //	  TIM2->CCR2=100;
 //	  speed+=20;
 //	  HAL_Delay(1000);
+
+	  motor_forward(speed);
+	  HAL_Delay(3000);
+	  motor_stop();
+	  HAL_Delay(1000);
+	  motor_reverse(speed);
+	  HAL_Delay(3000);
+	  motor_stop();
+	  HAL_Delay(1000);
+	  motor_left(speed);
+	  HAL_Delay(3000);
+	  motor_stop();
+	  HAL_Delay(1000);
+	  motor_right(speed);
+	  HAL_Delay(3000);
+	  motor_stop();
+	  HAL_Delay(1000);
 
   }
 
@@ -252,6 +274,10 @@ uint32_t constrain(uint32_t value, uint32_t min, uint32_t max) {
     }
 }
 
+uint32_t map(uint32_t x, uint32_t in_min, uint32_t in_max, uint32_t out_min, uint32_t out_max)
+{
+    return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
+}
 void collisionWarning(void){
 
 	  int frontDistance 	  = ultraSonic_readDistance(TRIG_1_PORT, TRIG_1_PIN, Echo1_GPIO_Port,Echo1_Pin, &htim1);
@@ -360,8 +386,37 @@ void collisionWarning(void){
 
 }
 
+void ACC(){
+// Read distances from ultrasonic sensors
+	int frontDistance 	  = ultraSonic_readDistance(TRIG_1_PORT, TRIG_1_PIN, Echo1_GPIO_Port,Echo1_Pin, &htim1);
 
+  // Constrain filtered distance within a valid range
+  frontDistance = constrain(frontDistance, 0, 100);
 
+  printf("front Distance: %d\n\r", frontDistance );
+
+  // Check if obstacles are too close in front
+  if (frontDistance < MIN_WARNING_DISTANCE) {
+    // Stop the motors if obstacles are too close
+    motor_stop();
+    printf("Stop\n\r");
+  } else {
+    // Adjust motor speeds based on filtered distance
+    adjustMotors(frontDistance);
+  }
+}
+
+void adjustMotors(uint16_t distance){
+	uint16_t motorSpeed=0;
+	// Function to adjust motor speeds based on distances
+	  motorSpeed = map(distance, MIN_DISTANCE, MAX_DISTANCE, 0, 255);
+	  motorSpeed = motorSpeed * 2;
+	  motorSpeed = constrain(motorSpeed, 0, 255);  // Adjust motor speed scale
+	  printf("motor Speed: %d \n \r ", motorSpeed);
+
+	  motor_forward(motorSpeed);
+	  printf("Forward\n \r");
+}
 
 /* USER CODE END 4 */
 
