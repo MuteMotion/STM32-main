@@ -82,7 +82,7 @@ void motor_set_speed(Motor motor,uint16_t speed) {
             	__HAL_TIM_SET_COMPARE(MOTOR_A_TIM, MOTOR_A_CHANNEL, speed);
             	break;
             case MOTOR_B:
-            	 __HAL_TIM_SET_COMPARE(MOTOR_A_TIM, MOTOR_A_CHANNEL, speed);
+            	 __HAL_TIM_SET_COMPARE(MOTOR_B_TIM, MOTOR_B_CHANNEL, speed);
             	 break;
 
     }
@@ -93,12 +93,12 @@ void motor_set_direction(Motor motor,MotorDirection direction) {
 	switch (direction)
 		{
         case MOTOR_DIRECTION_FORWARD:
-            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PORT, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PORT, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PIN, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PIN, GPIO_PIN_SET);
             break;
         case MOTOR_DIRECTION_BACKWARD:
-            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PORT, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PORT, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PIN, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PIN, GPIO_PIN_RESET);
             break;
 		}
     }
@@ -107,12 +107,12 @@ void motor_set_direction(Motor motor,MotorDirection direction) {
     	switch (direction)
     		{
             case MOTOR_DIRECTION_FORWARD:
-                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PORT, GPIO_PIN_RESET);
-                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PORT, GPIO_PIN_SET);
+                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PIN, GPIO_PIN_RESET);
+                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PIN, GPIO_PIN_SET);
                 break;
             case MOTOR_DIRECTION_BACKWARD:
-                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PORT, GPIO_PIN_SET);
-                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PORT, GPIO_PIN_RESET);
+                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PIN, GPIO_PIN_SET);
+                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PIN, GPIO_PIN_RESET);
                 break;
     		}
     }

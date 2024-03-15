@@ -24,18 +24,18 @@ typedef enum {
 #define MOTOR_A_TIM &htim2
 #define MOTOR_B_TIM &htim2
 
-#define MOTOR_A_CHANNEL TIM_CHANNEL_2
-#define MOTOR_B_CHANNEL TIM_CHANNEL_3
+#define MOTOR_A_CHANNEL TIM_CHANNEL_2  //PB3
+#define MOTOR_B_CHANNEL TIM_CHANNEL_3  //PB10
 
 #define MOTOR_A_IN1_PORT GPIOB
 #define MOTOR_A_IN2_PORT GPIOB
-#define MOTOR_A_IN1_PIN GPIO_PIN_3
-#define MOTOR_A_IN2_PIN GPIO_PIN_10
+#define MOTOR_A_IN1_PIN GPIO_PIN_12
+#define MOTOR_A_IN2_PIN GPIO_PIN_13
 
 #define MOTOR_B_IN1_PORT GPIOB
 #define MOTOR_B_IN2_PORT GPIOB
-#define MOTOR_B_IN1_PIN GPIO_PIN_3
-#define MOTOR_B_IN2_PIN GPIO_PIN_10
+#define MOTOR_B_IN1_PIN GPIO_PIN_14
+#define MOTOR_B_IN2_PIN GPIO_PIN_15
 
 
 void Init_PWM_Timer(TIM_HandleTypeDef *htim,TIM_TypeDef *timerInstance, uint32_t Prescaler, uint32_t Period, uint32_t pwm_channel_init);

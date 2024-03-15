@@ -98,7 +98,7 @@ int main(void)
   ultraSonic_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
-int speed=0;
+int speed=0,flag=0;
 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_14, 0);
 //HAL_GPIO_WritePin(GPIOB, GPIO_PIN_15, 1);
 //  /* USER CODE END 2 */
@@ -111,15 +111,32 @@ int speed=0;
 //
 //	  	  printf("Distance: %d \n\r",frontDistance);
 //	  	  HAL_Delay(500);
+	  if (flag ==0){
 	  motor_set_direction(MOTOR_A, 1);
+	  motor_set_direction(MOTOR_B, 1);
 	  motor_set_speed(MOTOR_A, speed);
+	  motor_set_speed(MOTOR_B, speed);
 //	  TIM2->CCR2=speed;
 	  speed+=20;
 	  HAL_Delay(1000);
 	  if (speed>255){
 		  speed =0;
-		  }
-
+		  flag =1;
+	  }
+	  }
+	  else {
+		  motor_set_direction(MOTOR_A, 0);
+		  	  motor_set_direction(MOTOR_B, 0);
+		  	  motor_set_speed(MOTOR_A, speed);
+		  	  motor_set_speed(MOTOR_B, speed);
+		  //	  TIM2->CCR2=speed;
+		  	  speed+=20;
+		  	  HAL_Delay(1000);
+		  	  if (speed>255){
+		  		  speed =0;
+		  		  flag =0;
+		  	  }
+	  }
 //	  TIM2->CCR2=100;
 //	  speed+=20;
 //	  HAL_Delay(1000);
