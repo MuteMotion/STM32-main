@@ -1,4 +1,4 @@
-../Drivers/motorDriver/motorDriver.c:15:6:Init_PWM_Timer	80	static
-../Drivers/motorDriver/motorDriver.c:46:6:motor_init	56	static
-../Drivers/motorDriver/motorDriver.c:68:6:motor_set_speed	16	static
-../Drivers/motorDriver/motorDriver.c:73:6:motor_set_direction	16	static
+../Drivers/motorDriver/motorDriver.c:10:6:Init_PWM_Timer	80	static
+../Drivers/motorDriver/motorDriver.c:41:6:motor_init	48	static
+../Drivers/motorDriver/motorDriver.c:78:6:motor_set_speed	16	static
+../Drivers/motorDriver/motorDriver.c:91:6:motor_set_direction	16	static

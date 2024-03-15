@@ -30,6 +30,7 @@ extern "C" {
 #include "stm32f4xx_hal.h"
 #include "ultraSonic.h"
 #include "motorDriver.h"
+#include "stdio.h"
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 

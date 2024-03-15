@@ -92,7 +92,9 @@ int main(void)
   /* Initialize all configured peripherals */
 //  ultraSonic_Init();
 //  HAL_TIM_PWM_Start(&htim2, TIM_CHANNEL_2);
-  motor_init(&htim4,TIM4,TIM_CHANNEL_3, GPIOB, GPIO_PIN_14, GPIOB,GPIO_PIN_15);
+  motor_init(MOTOR_A);
+  motor_init(MOTOR_B);
+
   ultraSonic_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
@@ -109,9 +111,8 @@ int speed=0;
 //
 //	  	  printf("Distance: %d \n\r",frontDistance);
 //	  	  HAL_Delay(500);
-
-	  motor_set_direction(1);
-	  motor_set_speed(speed);
+	  motor_set_direction(MOTOR_A, 1);
+	  motor_set_speed(MOTOR_A, speed);
 //	  TIM2->CCR2=speed;
 	  speed+=20;
 	  HAL_Delay(1000);

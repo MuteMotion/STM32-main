@@ -1,10 +1,5 @@
 #include "motorDriver.h"
 
-TIM_HandleTypeDef *htim_pwm;
-GPIO_TypeDef *port_dir1, *port_dir2;
-uint16_t pin_dir1, pin_dir2;
-uint32_t pwm_channel;
-
 extern TIM_HandleTypeDef htim1;
 extern TIM_HandleTypeDef htim2;
 extern TIM_HandleTypeDef htim3;
@@ -43,42 +38,83 @@ void Init_PWM_Timer(TIM_HandleTypeDef *htim, TIM_TypeDef *timerInstance, uint32_
 }
 
 
-void motor_init(TIM_HandleTypeDef *htim_pwm_init,TIM_TypeDef *timerInstance, uint32_t pwm_channel_init, GPIO_TypeDef *port_dir1_init, uint16_t pin_dir1_init, GPIO_TypeDef *port_dir2_init, uint16_t pin_dir2_init) {
-    htim_pwm = htim_pwm_init;
-    port_dir1 = port_dir1_init;
-    pin_dir1 = pin_dir1_init;
-    port_dir2 = port_dir2_init;
-    pin_dir2 = pin_dir2_init;
-    pwm_channel =pwm_channel_init;
+void motor_init(Motor motor){
 
-    Init_PWM_Timer(htim_pwm,timerInstance, 4, 255, pwm_channel);
-    GPIO_InitTypeDef GPIO_InitStruct = {0};
+	GPIO_InitTypeDef GPIO_InitStruct = {0};
+switch(motor)
+{
+case MOTOR_A:
+	Init_PWM_Timer(MOTOR_A_TIM,TIM2, 4, 255, MOTOR_A_CHANNEL);
+
     // Configure direction control pins
-	GPIO_InitStruct.Pin = pin_dir1_init | pin_dir2_init;
+	GPIO_InitStruct.Pin = MOTOR_A_IN1_PIN| MOTOR_A_IN2_PIN;
 	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-	HAL_GPIO_Init(port_dir1_init, &GPIO_InitStruct);
-	HAL_GPIO_Init(port_dir2_init, &GPIO_InitStruct);
+	HAL_GPIO_Init(MOTOR_A_IN1_PORT, &GPIO_InitStruct);
+	HAL_GPIO_Init(MOTOR_A_IN2_PORT, &GPIO_InitStruct);
 
 
 
-    HAL_GPIO_WritePin(port_dir1, pin_dir1, GPIO_PIN_RESET);
-    HAL_GPIO_WritePin(port_dir2, pin_dir2, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PIN, GPIO_PIN_RESET);
+    HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PIN, GPIO_PIN_RESET);
+    break;
+case MOTOR_B:
+	Init_PWM_Timer(MOTOR_B_TIM,TIM2, 4, 255, MOTOR_B_CHANNEL);
+//	GPIO_InitTypeDef GPIO_InitStruct = {0};
+	// Configure direction control pins
+	GPIO_InitStruct.Pin = MOTOR_B_IN1_PIN| MOTOR_B_IN2_PIN;
+	GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+	HAL_GPIO_Init(MOTOR_B_IN1_PORT, &GPIO_InitStruct);
+	HAL_GPIO_Init(MOTOR_B_IN2_PORT, &GPIO_InitStruct);
+
+
+
+	HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PIN, GPIO_PIN_RESET);
+	HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PIN, GPIO_PIN_RESET);
+
+
+}
 }
 
-void motor_set_speed(uint16_t speed) {
-    __HAL_TIM_SET_COMPARE(htim_pwm, pwm_channel, speed);
-//	TIM2->CCR2=speed;
+void motor_set_speed(Motor motor,uint16_t speed) {
+    switch (motor)
+    {
+            case MOTOR_A:
+            	__HAL_TIM_SET_COMPARE(MOTOR_A_TIM, MOTOR_A_CHANNEL, speed);
+            	break;
+            case MOTOR_B:
+            	 __HAL_TIM_SET_COMPARE(MOTOR_A_TIM, MOTOR_A_CHANNEL, speed);
+            	 break;
+
+    }
 }
 
-void motor_set_direction(MotorDirection direction) {
-    switch (direction) {
+void motor_set_direction(Motor motor,MotorDirection direction) {
+    if (motor == MOTOR_A){
+	switch (direction)
+		{
         case MOTOR_DIRECTION_FORWARD:
-            HAL_GPIO_WritePin(port_dir1, pin_dir1, GPIO_PIN_RESET);
-            HAL_GPIO_WritePin(port_dir2, pin_dir2, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PORT, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PORT, GPIO_PIN_SET);
             break;
         case MOTOR_DIRECTION_BACKWARD:
-            HAL_GPIO_WritePin(port_dir1, pin_dir1, GPIO_PIN_SET);
-            HAL_GPIO_WritePin(port_dir2, pin_dir2, GPIO_PIN_RESET);
+            HAL_GPIO_WritePin(MOTOR_A_IN1_PORT, MOTOR_A_IN1_PORT, GPIO_PIN_SET);
+            HAL_GPIO_WritePin(MOTOR_A_IN2_PORT, MOTOR_A_IN2_PORT, GPIO_PIN_RESET);
             break;
+		}
     }
+    if (motor == MOTOR_B)
+    {
+    	switch (direction)
+    		{
+            case MOTOR_DIRECTION_FORWARD:
+                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PORT, GPIO_PIN_RESET);
+                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PORT, GPIO_PIN_SET);
+                break;
+            case MOTOR_DIRECTION_BACKWARD:
+                HAL_GPIO_WritePin(MOTOR_B_IN1_PORT, MOTOR_B_IN1_PORT, GPIO_PIN_SET);
+                HAL_GPIO_WritePin(MOTOR_B_IN2_PORT, MOTOR_B_IN2_PORT, GPIO_PIN_RESET);
+                break;
+    		}
+    }
+
 }

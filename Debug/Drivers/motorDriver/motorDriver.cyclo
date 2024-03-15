@@ -1,4 +1,4 @@
-../Drivers/motorDriver/motorDriver.c:15:6:Init_PWM_Timer	1
-../Drivers/motorDriver/motorDriver.c:46:6:motor_init	1
-../Drivers/motorDriver/motorDriver.c:68:6:motor_set_speed	4
-../Drivers/motorDriver/motorDriver.c:73:6:motor_set_direction	3
+../Drivers/motorDriver/motorDriver.c:10:6:Init_PWM_Timer	1
+../Drivers/motorDriver/motorDriver.c:41:6:motor_init	3
+../Drivers/motorDriver/motorDriver.c:78:6:motor_set_speed	3
+../Drivers/motorDriver/motorDriver.c:91:6:motor_set_direction	7
