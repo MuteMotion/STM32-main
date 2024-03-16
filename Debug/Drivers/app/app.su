@@ -1,0 +1,9 @@
+../Drivers/app/app.c:14:6:app_init	8	static
+../Drivers/app/app.c:21:7:MX_USART6_UART_Init	8	static
+../Drivers/app/app.c:40:5:__io_putchar	16	static
+../Drivers/app/app.c:47:10:constrain	24	static
+../Drivers/app/app.c:57:10:map	24	static
+../Drivers/app/app.c:61:6:collisionWarning	40	static
+../Drivers/app/app.c:169:6:ACC	24	static
+../Drivers/app/app.c:189:6:adjustMotors	32	static
+../Drivers/app/app.c:200:6:app_start	8	static
